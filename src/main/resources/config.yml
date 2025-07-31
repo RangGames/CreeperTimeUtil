@@ -1,0 +1,63 @@
+# CreeperTimeUtil 설정 파일
+
+# 디버그 모드 설정
+debug:
+  enabled: false  # 디버그 모드 활성화 여부
+  log-events: true  # 시간 이벤트 로깅 여부
+  log-performance: false  # 성능 메트릭 로깅 여부
+
+# 시간 설정
+time:
+  # 기본 시간 속도 (1.0 = 기본, 2.0 = 2배속)
+  default-speed: 1.0
+  
+  # 서버 시작 시 시간을 특정 값으로 설정
+  # -1로 설정하면 이전 시간을 이어서 진행
+  start-day: -1
+  start-hour: -1
+  start-minute: -1
+
+# 월드별 시간대 설정
+worlds:
+  # 월드별 시간대 시스템 활성화 여부
+  timezone-enabled: true
+  
+  # 월드별 설정
+  # 예시:
+  # world:
+  #   enabled: true  # 이 월드의 커스텀 시간대 활성화
+  #   offset: 0      # 서버 시간과의 차이 (분 단위)
+  #   speed: 1.0     # 이 월드의 시간 속도
+  #   timezone: "SERVER_TIME"  # 시간대 프리셋 (선택사항)
+  
+  world:
+    enabled: false
+    offset: 0
+    speed: 1.0
+    
+  world_nether:
+    enabled: false
+    offset: 720  # 12시간 차이
+    speed: 2.0   # 2배속
+    
+  world_the_end:
+    enabled: false
+    offset: -720  # -12시간 차이
+    speed: 0.5    # 0.5배속
+    
+  # 특수 시간대 예시
+  eternal_day_world:
+    enabled: false
+    timezone: "ETERNAL_DAY"  # 항상 낮
+    
+  eternal_night_world:
+    enabled: false
+    timezone: "ETERNAL_NIGHT"  # 항상 밤
+
+# 데이터 저장 설정
+data:
+  # 자동 저장 간격 (분)
+  auto-save-interval: 30
+  
+  # 플레이어 시간 데이터 저장 여부
+  save-player-time: true

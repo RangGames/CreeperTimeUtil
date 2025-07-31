@@ -19,10 +19,12 @@ public final class CreeperTimeUtil extends JavaPlugin {
     public void onEnable() {
         // Config 로드
         saveDefaultConfig();
-        loadConfiguration();
         
-        // TimeKernel 초기화 및 시작
+        // TimeKernel 초기화 - 설정 로드 전에 초기화
         timeKernel = new TimeKernel(this);
+        
+        // 설정 로드 (TimeKernel이 필요한 TimeDebugger 사용)
+        loadConfiguration();
         
         // Config에서 시작 시간 설정 적용
         applyStartTimeConfig();

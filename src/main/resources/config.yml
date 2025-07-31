@@ -54,6 +54,38 @@ worlds:
     enabled: false
     timezone: "ETERNAL_NIGHT"  # 항상 밤
 
+# 액션바 설정
+actionbar:
+  # 액션바 표시 여부
+  enabled: true
+  
+  # 액션바 업데이트 간격 (틱, 20틱 = 1초)
+  update-interval: 20
+  
+  # 액션바 텍스트 형식
+  # 사용 가능한 플레이스홀더:
+  # %creepertimeutil_day% - 현재 일
+  # %creepertimeutil_hour% - 현재 시간 (0-23)
+  # %creepertimeutil_minute% - 현재 분
+  # %creepertimeutil_formatted_time% - 포맷된 시간 (예: 14:30)
+  # %creepertimeutil_period% - 오전/오후
+  # %creepertimeutil_formatted_time_12h% - 12시간 형식 (예: 2:30 PM)
+  # %creepertimeutil_day_name% - 요일 이름
+  # %creepertimeutil_month% - 월
+  # %creepertimeutil_year% - 연도
+  # %creepertimeutil_world_time% - 월드별 시간 (월드별 시간대 활성화 시)
+  # 그 외 PlaceholderAPI 플레이스홀더도 지원
+  format: "&7Day &e%creepertimeutil_day% &7| &f%creepertimeutil_formatted_time_12h%"
+  
+  # 월드별 액션바 설정 (선택사항)
+  # 특정 월드에서 다른 형식을 사용하고 싶을 때 설정
+  world-formats:
+    # world:
+    #   enabled: true
+    #   format: "&b월드 시간: &f%creepertimeutil_world_time%"
+    # world_nether:
+    #   enabled: false  # 네더에서는 액션바 비활성화
+
 # 데이터 저장 설정
 data:
   # 자동 저장 간격 (분)

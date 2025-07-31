@@ -220,4 +220,33 @@ public class WorldTimeZoneAPI {
         worldTimeOffsets.clear();
         worldTimeSpeed.clear();
     }
+    
+    /**
+     * 월드별 시간대가 활성화되어 있는지 확인합니다.
+     * @param worldName 월드 이름
+     * @return 활성화 여부
+     */
+    public static boolean isWorldTimeZoneEnabled(String worldName) {
+        return worldTimeOffsets.containsKey(worldName) || worldTimeSpeed.containsKey(worldName);
+    }
+    
+    /**
+     * 월드의 현재 시간을 배열로 반환합니다.
+     * @param worldName 월드 이름
+     * @return [일, 시간, 분] 배열
+     */
+    public static int[] getWorldTime(String worldName) {
+        // World 객체가 없으므로 이름으로 처리
+        long serverMinutes = ServerClockAPI.getTotalMinutes();
+        long offset = worldTimeOffsets.getOrDefault(worldName, 0L);
+        double speed = worldTimeSpeed.getOrDefault(worldName, 1.0);
+        
+        long worldMinutes = (long)(serverMinutes * speed) + offset;
+        
+        int day = (int) (worldMinutes / 1440) + 1;
+        int hour = (int) ((worldMinutes % 1440) / 60);
+        int minute = (int) (worldMinutes % 60);
+        
+        return new int[]{day, hour, minute};
+    }
 }

@@ -10,10 +10,12 @@ import wiki.creeper.creeperTimeUtil.api.WorldTimeZoneAPI;
 import wiki.creeper.creeperTimeUtil.core.TimeKernel;
 import wiki.creeper.creeperTimeUtil.debug.TimeDebugger;
 import wiki.creeper.creeperTimeUtil.listeners.PlayerTimeListener;
+import org.creepertime.manager.ActionBarManager;
 
 public final class CreeperTimeUtil extends JavaPlugin {
     
     private TimeKernel timeKernel;
+    private ActionBarManager actionBarManager;
 
     @Override
     public void onEnable() {
@@ -40,6 +42,10 @@ public final class CreeperTimeUtil extends JavaPlugin {
         // 자동 저장 스케줄러 시작
         startAutoSaveTask();
         
+        // 액션바 매니저 초기화
+        actionBarManager = new ActionBarManager(this);
+        actionBarManager.start();
+        
         getLogger().info("CreeperTimeUtil 플러그인이 활성화되었습니다.");
         getLogger().info("현재 서버 시간: " + timeKernel.getFormattedTime());
         
@@ -50,6 +56,11 @@ public final class CreeperTimeUtil extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        // 액션바 매니저 정지
+        if (actionBarManager != null) {
+            actionBarManager.stop();
+        }
+        
         // 플레이어 데이터 저장
         PlayerTimeAPI.saveAllPlayerData();
         
@@ -149,6 +160,16 @@ public final class CreeperTimeUtil extends JavaPlugin {
         reloadConfig();
         WorldTimeZoneAPI.resetAllTimeZones();
         loadConfiguration();
+        
+        // 액션바 매니저 리로드
+        if (actionBarManager != null) {
+            actionBarManager.reload();
+        }
+        
         getLogger().info("설정이 다시 로드되었습니다.");
+    }
+    
+    public TimeKernel getTimeKernel() {
+        return timeKernel;
     }
 }

@@ -361,9 +361,64 @@ public class TimeKernel {
             throw new IllegalArgumentException("분은 0-59 사이여야 합니다");
         }
         
+        long oldTotalMinutes = this.totalMinutes;
         this.totalMinutes = ((day - 1) * 1440L) + (hour * 60L) + minute;
-        updateVisualTime();
+        
+        // Fire time change event
+        Bukkit.getScheduler().runTask(plugin, () -> {
+            ServerTimeChangeEvent timeChangeEvent = new ServerTimeChangeEvent(
+                oldTotalMinutes, totalMinutes, day, hour, minute
+            );
+            Bukkit.getPluginManager().callEvent(timeChangeEvent);
+            
+            // Update world visual time to match new custom time
+            updateVisualTime();
+            
+            // Check for any time-based events that need to fire
+            checkAndFireTimeEvents();
+        });
+        
         updateLastValues();
+    }
+    
+    // 시간 변경 시 필요한 이벤트 체크 및 발생
+    private void checkAndFireTimeEvents() {
+        int currentHour = getHour();
+        int currentDay = getDay();
+        int currentWeek = getWeek();
+        int currentMonth = getMonth();
+        
+        // Check for hour change
+        if (currentHour != lastHour) {
+            lastHour = currentHour;
+            ServerHourChangeEvent hourEvent = new ServerHourChangeEvent(currentHour, currentDay);
+            Bukkit.getPluginManager().callEvent(hourEvent);
+        }
+        
+        // Check for day change
+        if (currentDay != lastDay) {
+            lastDay = currentDay;
+            ServerDayChangeEvent dayEvent = new ServerDayChangeEvent(currentDay);
+            Bukkit.getPluginManager().callEvent(dayEvent);
+            
+            // Check for week change
+            if (dayEvent.getDayOfWeek() == 1 && currentWeek != lastWeek) {
+                lastWeek = currentWeek;
+                ServerWeekChangeEvent weekEvent = new ServerWeekChangeEvent(currentWeek, currentDay);
+                Bukkit.getPluginManager().callEvent(weekEvent);
+            }
+        }
+        
+        // Check for month change
+        if (currentMonth != lastMonth) {
+            lastMonth = currentMonth;
+            int currentYear = getYear();
+            ServerMonthChangeEvent monthEvent = new ServerMonthChangeEvent(currentMonth, currentYear);
+            Bukkit.getPluginManager().callEvent(monthEvent);
+        }
+        
+        // Check for time of day changes
+        checkTimeOfDay(currentHour);
     }
     
     // 공개 메소드 - 자동 저장용

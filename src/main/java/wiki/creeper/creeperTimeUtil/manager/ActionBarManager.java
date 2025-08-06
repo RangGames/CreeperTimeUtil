@@ -1,7 +1,7 @@
-package org.creepertime.manager;
+package wiki.creeper.creeperTimeUtil.manager;
 
 import wiki.creeper.creeperTimeUtil.CreeperTimeUtil;
-import org.creepertime.task.ActionBarTask;
+import wiki.creeper.creeperTimeUtil.task.ActionBarTask;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
